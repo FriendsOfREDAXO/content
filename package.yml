@@ -1,0 +1,30 @@
+package: rex_content
+version: "0.0.1-dev"
+name: REDAXO Content Helper
+author: eaCe
+supportpage: https://github.com/eace/rex_content
+
+requires:
+  redaxo: ^5.14.0
+  php:
+    version: '>=8.0'
+
+installer_ignore:
+  - .git
+  - .github
+  - node_modules
+  - tests
+  - tests_output
+  - .editorconfig
+  - .eslintrc.js
+  - .gitignore
+  - .stylelintrc.js
+  - composer.json
+  - composer.lock
+  - nightwatch.conf.js
+  - package.json
+  - package-lock.json
+  - yarn.lock
+  - phpcs.xml
+  - phpunit.xml
+  - resources

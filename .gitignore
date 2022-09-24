@@ -1,0 +1,10 @@
+.idea
+/.phpunit.result.cache
+/vendor
+/node_modules/
+/tests_output/
+/.env
+/test-results/
+/playwright-report/
+/playwright/.cache/
+/screens/
