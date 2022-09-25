@@ -26,7 +26,7 @@ test('expect category does not exists exception', function ()
 
 test('expect article id', function ()
 {
-    expect(rex_content::createArticle('Article Name', 0, 'last', 1))->toBeInt();
+    expect(rex_content::createArticle('Article Name'))->toBeInt();
 });
 
 afterEach(function ()

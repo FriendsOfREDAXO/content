@@ -46,6 +46,9 @@ class rex_content
         if ($templateId !== null) {
             $data['template_id'] = $templateId;
         }
+        else {
+            $data['template_id'] = rex_template::getDefaultId();
+        }
 
         rex_article_service::addArticle($data);
 
