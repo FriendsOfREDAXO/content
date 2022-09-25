@@ -221,27 +221,63 @@ class rex_content
      * @throws rex_socket_exception
      * @throws rex_exception
      */
-    public static function createMedia(string $url, string $fileName, int $category = 0): void
+    public static function createMediaFromUrl(string $url, string $fileName, int $category = 0): void
     {
         if (rex_media::get($fileName) === null) {
             $path = rex_path::media($fileName);
             $media = rex_socket::factoryUrl($url)->doGet();
             $media->writeBodyTo($path);
 
-            $data = [];
-            $data['title'] = '';
-            $data['category_id'] = $category;
-            $data['file'] = [
-                'name' => $fileName,
-                'path' => $path,
-            ];
+            self::createMedia($fileName, $category, $path);
+        }
+    }
 
-            try {
-                rex_media_service::addMedia($data, false);
-            }
-            catch (rex_api_exception $e) {
-                throw new rex_functional_exception($e->getMessage());
-            }
+    /**
+     * create a placeholder image via GD
+     *
+     * @param string $fileName
+     * @param int $category
+     * @param int $width
+     * @param int $height
+     * @return void
+     * @throws rex_functional_exception
+     */
+    public static function createMediaFromGD(string $fileName, int $category = 0, int $width = 500, int $height = 500): void
+    {
+        if (rex_media::get($fileName) === null) {
+            $path = rex_path::media($fileName);
+            $image = @imagecreate($width, $height);
+            imagecolorallocate($image, 255, 0, 255);
+            imagejpeg($image, rex_path::media($fileName));
+            imagedestroy($image);
+
+            self::createMedia($fileName, $category, $path);
+        }
+    }
+
+    /**
+     * @param string $fileName
+     * @param int $category
+     * @param int $width
+     * @param int $height
+     * @return void
+     * @throws rex_functional_exception
+     */
+    private static function createMedia(string $fileName, int $category, string $path): void
+    {
+        $data = [];
+        $data['title'] = '';
+        $data['category_id'] = $category;
+        $data['file'] = [
+            'name' => $fileName,
+            'path' => $path,
+        ];
+
+        try {
+            rex_media_service::addMedia($data, false);
+        }
+        catch (rex_api_exception $e) {
+            throw new rex_functional_exception($e->getMessage());
         }
     }
 
