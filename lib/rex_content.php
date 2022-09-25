@@ -9,15 +9,19 @@ class rex_content
      * @param int $categoryId
      * @param int|string $priority
      * @param int|null $templateId
-     * @return void
-     * @throws rex_sql_exception|rex_api_exception
+     * @return int|null article id on success null on failure
+     * @throws rex_sql_exception|rex_api_exception|rex_exception
      */
-    public static function createArticle(string $name, int $categoryId = 0, int|string $priority = -1, int|null $templateId = null): void
+    public static function createArticle(string $name, int $categoryId = 0, int|string $priority = -1, int|null $templateId = null): int|null
     {
         $data = [
             'name' => rex_string::sanitizeHtml(trim($name)),
             'category_id' => $categoryId,
         ];
+
+        if (rex_category::get($categoryId) === null && $categoryId > 0) {
+            throw new rex_exception('Category does not exist');
+        }
 
         if (is_int($priority)) {
             $data['priority'] = $priority;
@@ -44,6 +48,15 @@ class rex_content
         }
 
         rex_article_service::addArticle($data);
+
+        $sql = rex_sql::factory();
+        $sql->setQuery('SELECT id FROM ' . rex::getTable('article') . ' WHERE name = ? ORDER BY id DESC LIMIT 1', [$name]);
+
+        if ($sql->getRows() === 1) {
+            return (int)$sql->getValue('id');
+        }
+
+        return null;
     }
 
     /**
