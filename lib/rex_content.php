@@ -53,7 +53,7 @@ class rex_content
      * @param string|null $key
      * @param string $input
      * @param string $output
-     * @return int
+     * @return int the id of the created module
      * @throws rex_sql_exception
      */
     public static function createModule(string $name, string|null $key = null, string $input = '', string $output = ''): int
@@ -80,7 +80,7 @@ class rex_content
      * @param string|null $key
      * @param string $content
      * @param int $active
-     * @return int
+     * @return int the id of the created template
      * @throws rex_sql_exception
      */
     public static function createTemplate(string $name, string|null $key = null, string $content = '', int $active = 1): int
@@ -106,20 +106,122 @@ class rex_content
         return $templateId;
     }
 
-    public static function createSlice(string $name, int $categoryId = 0, int $priority = -1, int $templateId = null): void
+    /**
+     * get the contents from an template by id
+     *
+     * @param int $id
+     * @return false|string string on success false on failure
+     * @throws rex_sql_exception
+     */
+    public static function getTemplateContent(int $id): false|string
     {
-        // TODO: create slice
-//        rex_content_service::addSlice();
+        $templateSql = rex_sql::factory();
+        $templateSql->setQuery('SELECT content FROM ' . rex::getTable('template') . ' WHERE id = ?', [$id]);
+
+        if ($templateSql->getRows() === 0) {
+            return false;
+        }
+
+        return $templateSql->getValue('content');
     }
 
+    /**
+     * update content of an existing template
+     *
+     * @param int $id
+     * @param string $content
+     * @return void
+     * @throws rex_sql_exception
+     */
+    public static function setTemplateContent(int $id, string $content): void
+    {
+        $template = new rex_template($id);
+        $templateSql = rex_sql::factory();
+        $templateSql->setQuery('SELECT * FROM ' . rex::getTable('template') . ' WHERE id = ?', [$template->getId()]);
+
+        if (1 === $templateSql->getRows()) {
+            $sql = rex_sql::factory();
+            $sql->setTable(rex::getTable('template'));
+            $sql->setWhere(['id' => $template->getId()]);
+            $sql->setValue('content', $content);
+            $sql->addGlobalUpdateFields();
+
+            try {
+                $sql->update();
+                rex_template_cache::delete($template->getId());
+            }
+            catch (rex_sql_exception $error) {
+                if (rex_sql::ERROR_VIOLATE_UNIQUE_KEY === $error->getErrorCode()) {
+                    throw new rex_sql_exception(rex_i18n::msg('template_key_exists'));
+                }
+
+                throw new rex_sql_exception($error->getMessage());
+            }
+        }
+    }
+
+    /**
+     * create a slice
+     *
+     * @param int $articleId
+     * @param int $moduleId
+     * @param int $clangId
+     * @param int $ctypeId
+     * @param array $data
+     * @return void
+     * @throws rex_api_exception
+     */
+    public static function createSlice(int $articleId, int $moduleId, int $clangId, int $ctypeId = 1, array $data = []): void
+    {
+        rex_content_service::addSlice($articleId, $clangId, $ctypeId, $moduleId, $data);
+    }
+
+    /**
+     * create a language
+     *
+     * @param string $code
+     * @param string $name
+     * @param int $priority
+     * @param bool $status
+     * @return void
+     */
     public static function createLanguage(string $code, string $name, int $priority, bool $status = false): void
     {
         rex_clang_service::addCLang($code, $name, $priority, $status);
     }
 
-
-    public static function createMedia(): void
+    /**
+     * upload media from url
+     *
+     * @param string $url
+     * @param string $fileName
+     * @param int $category
+     * @return void
+     * @throws rex_functional_exception
+     * @throws rex_socket_exception
+     * @throws rex_exception
+     */
+    public static function createMedia(string $url, string $fileName, int $category = 0): void
     {
-        // TODO: create media from url...
+        if (rex_media::get($fileName) === null) {
+            $path = rex_path::media($fileName);
+            $media = rex_socket::factoryUrl($url)->doGet();
+            $media->writeBodyTo($path);
+
+            $data = [];
+            $data['title'] = '';
+            $data['category_id'] = $category;
+            $data['file'] = [
+                'name' => $fileName,
+                'path' => $path,
+            ];
+
+            try {
+                rex_media_service::addMedia($data, false);
+            }
+            catch (rex_api_exception $e) {
+                throw new rex_functional_exception($e->getMessage());
+            }
+        }
     }
 }
