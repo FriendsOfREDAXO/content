@@ -9,6 +9,9 @@ beforeEach(function ()
 //    $this->value = 'value';
 });
 
+/**
+ * template
+ */
 test('expect template content to be string', function ()
 {
     expect(rex_content::getTemplateContent(1))->toBeString();
@@ -19,6 +22,19 @@ test('expect template content to be false', function ()
     expect(rex_content::getTemplateContent(99))->toBeFalse();
 });
 
+test('expect template id', function ()
+{
+    expect(rex_content::createTemplate('Template Name', 'template_key'))->toBeInt();
+});
+
+test('expect template key already exists exception', function ()
+{
+    rex_content::createTemplate('Template Name 2', 'template_key');
+})->throws(rex_exception::class, 'Template key already exists');
+
+/**
+ * article
+ */
 test('expect category does not exists exception', function ()
 {
     rex_content::createArticle('Article Name', 99);
@@ -31,5 +47,4 @@ test('expect article id', function ()
 
 afterEach(function ()
 {
-//    rex_transient::remove($this->namespace, $this->key);
 });

@@ -97,13 +97,17 @@ class rex_content
      * @param string $content
      * @param int $active
      * @return int the id of the created template
-     * @throws rex_sql_exception
+     * @throws rex_sql_exception|rex_exception
      */
     public static function createTemplate(string $name, string|null $key = null, string $content = '', int $active = 1): int
     {
         $attributes['ctype'] = [];
         $attributes['modules'] = [1 => ['all' => '1']];
         $attributes['categories'] = ['all' => '1'];
+
+        if ($key !== null && self::templateKeyExists($key)) {
+            throw new rex_exception('Template key already exists');
+        }
 
         $sql = rex_sql::factory();
         $sql->setTable(rex::getTable('template'));
@@ -239,5 +243,22 @@ class rex_content
                 throw new rex_functional_exception($e->getMessage());
             }
         }
+    }
+
+    /**
+     * @param string|null $key
+     * @return bool
+     * @throws rex_sql_exception
+     */
+    private static function templateKeyExists(string|null $key = null): bool
+    {
+        if ($key === null) {
+            return false;
+        }
+
+        $templateSql = rex_sql::factory();
+        $templateSql->setQuery('SELECT id FROM ' . rex::getTable('template') . ' WHERE `key` = ?', [$key]);
+
+        return $templateSql->getRows() !== 0;
     }
 }
