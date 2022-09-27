@@ -258,8 +258,7 @@ class rex_content
     /**
      * @param string $fileName
      * @param int $category
-     * @param int $width
-     * @param int $height
+     * @param string $path
      * @return void
      * @throws rex_functional_exception
      */
