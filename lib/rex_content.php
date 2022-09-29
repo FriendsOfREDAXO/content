@@ -78,8 +78,8 @@ class rex_content
         $sql->setTable(rex::getTable('module'));
         $sql->setValue('name', rex_string::sanitizeHtml(trim($name)));
         $sql->setValue('key', $key);
-        $sql->setValue('input', $input);
-        $sql->setValue('output', $output);
+        $sql->setValue('input', rex_string::sanitizeHtml($input));
+        $sql->setValue('output', rex_string::sanitizeHtml($output));
         $sql->addGlobalCreateFields();
 
         $sql->insert();
