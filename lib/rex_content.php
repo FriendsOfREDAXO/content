@@ -203,11 +203,21 @@ class rex_content
      * @param string $name
      * @param int $priority
      * @param bool $status
-     * @return void
+     * @return false|int
+     * @throws rex_sql_exception
      */
-    public static function createLanguage(string $code, string $name, int $priority, bool $status = false): void
+    public static function createLanguage(string $code, string $name, int $priority, bool $status = false): false|int
     {
         rex_clang_service::addCLang($code, $name, $priority, $status);
+
+        $sql = rex_sql::factory();
+        $sql->setQuery('SELECT id FROM ' . rex::getTable('clang') . ' WHERE `code` = ? LIMIT 1', [$code]);
+
+        if ($sql->getRows()) {
+            return (int)$sql->getValue('id');
+        }
+
+        return false;
     }
 
     /**

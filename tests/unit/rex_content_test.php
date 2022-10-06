@@ -53,6 +53,11 @@ test('expect article id', function ()
     expect(rex_content::createArticle('Article Name'))->toBeInt();
 });
 
+test('expect clang id', function ()
+{
+    expect(rex_content::createLanguage('xy', 'XY', 1))->toBeInt();
+});
+
 afterEach(function ()
 {
 });
