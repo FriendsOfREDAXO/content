@@ -9,7 +9,8 @@
   "require-dev": {
     "squizlabs/php_codesniffer": "^3.6",
     "overtrue/phplint": "^4.1",
-    "pestphp/pest": "^1.22"
+    "pestphp/pest": "^1.22",
+    "psr/log": "1.1.4"
   },
   "config": {
     "allow-plugins": {
