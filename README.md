@@ -11,9 +11,9 @@
  * Erstellen eines Artikel
  * return int(Article ID)|null 
  * @param string $name
- * @param int $categoryId
- * @param int|string $priority
- * @param int|null $templateId
+ * @param int $categoryId (optional)
+ * @param int|string $priority (optional)
+ * @param int|null $templateId (optional)
  */
 rex_content::createArticle('Article Name', int $categoryId = 0, int|string $priority = -1, int|null $templateId = null);
 ```
@@ -25,9 +25,9 @@ rex_content::createArticle('Article Name', int $categoryId = 0, int|string $prio
  * Erstellen eines Modules
  * return int(Module ID)
  * @param string $name
- * @param string|null $key
- * @param string $input
- * @param string $output
+ * @param string|null $key (optional)
+ * @param string $input (optional)
+ * @param string $output (optional)
  */
 rex_content::createModule('Module Name', string|null $key = null, string $input = '', string $output = '');
 ```
@@ -39,9 +39,9 @@ rex_content::createModule('Module Name', string|null $key = null, string $input 
  * Erstellen eines Templates
  * return int(Template ID)
  * @param string $name
- * @param string|null $key
- * @param string $content
- * @param int $active
+ * @param string|null $key (optional)
+ * @param string $content (optional)
+ * @param int $active (optional)
  */
 rex_content::createTemplate('Template Name', string|null $key = null, string $content = '', int $active = 1);
 
@@ -70,16 +70,16 @@ rex_content::setTemplateContent(1, '<div>Template Inhalt</div');
 
 /**
  * @param string $fileName
- * @param int $category
- * @param int $width
- * @param int $height
+ * @param int $category (optional)
+ * @param int $width (optional)
+ * @param int $height (optional)
 */
 rex_content::createMediaFromGD('filename.jpg', int $category = 0, int $width = 500, int $height = 500);
 
 /**
+ * @param string $url
  * @param string $fileName
- * @param int $category
- * @param string $path
+ * @param int $category (optional)
 */
 rex_content::createMediaFromUrl('https://url-to-file.de/file.jpg', 'filename.jpg', int $category = 0);
 ```
@@ -93,7 +93,7 @@ rex_content::createMediaFromUrl('https://url-to-file.de/file.jpg', 'filename.jpg
  * @param string $code
  * @param string $name
  * @param int $priority
- * @param bool $status
+ * @param bool $status (optional)
  */
 rex_content::createLanguage('language_code', 'Language Name', 1, bool $status = false);
 ```
