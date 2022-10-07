@@ -58,6 +58,16 @@ test('expect clang id', function ()
     expect(rex_content::createLanguage('xy', 'XY', 1))->toBeInt();
 });
 
+test('expect media array from GD', function ()
+{
+    expect(rex_content::createMediaFromGD('gd_image.jpg'))->toBeArray();
+});
+
+test('expect media array from URL', function ()
+{
+    expect(rex_content::createMediaFromUrl('https://raw.githubusercontent.com/FriendsOfREDAXO/friendsofredaxo.github.io/assets/v2/FOR-avatar-03.png', 'url_image.jpg'))->toBeArray();
+});
+
 afterEach(function ()
 {
 });

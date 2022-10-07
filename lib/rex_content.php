@@ -226,20 +226,21 @@ class rex_content
      * @param string $url
      * @param string $fileName
      * @param int $category
-     * @return void
+     * @return array|false
      * @throws rex_functional_exception
      * @throws rex_socket_exception
-     * @throws rex_exception
      */
-    public static function createMediaFromUrl(string $url, string $fileName, int $category = 0): void
+    public static function createMediaFromUrl(string $url, string $fileName, int $category = 0): array|false
     {
         if (rex_media::get($fileName) === null) {
             $path = rex_path::media($fileName);
             $media = rex_socket::factoryUrl($url)->doGet();
             $media->writeBodyTo($path);
 
-            self::createMedia($fileName, $category, $path);
+            return self::createMedia($fileName, $category, $path);
         }
+
+        return false;
     }
 
     /**
@@ -249,10 +250,10 @@ class rex_content
      * @param int $category
      * @param int $width
      * @param int $height
-     * @return void
+     * @return array|false
      * @throws rex_functional_exception
      */
-    public static function createMediaFromGD(string $fileName, int $category = 0, int $width = 500, int $height = 500): void
+    public static function createMediaFromGD(string $fileName, int $category = 0, int $width = 500, int $height = 500): array|false
     {
         if (rex_media::get($fileName) === null) {
             $path = rex_path::media($fileName);
@@ -261,18 +262,20 @@ class rex_content
             imagejpeg($image, rex_path::media($fileName));
             imagedestroy($image);
 
-            self::createMedia($fileName, $category, $path);
+            return self::createMedia($fileName, $category, $path);
         }
+
+        return false;
     }
 
     /**
      * @param string $fileName
      * @param int $category
      * @param string $path
-     * @return void
+     * @return array
      * @throws rex_functional_exception
      */
-    private static function createMedia(string $fileName, int $category, string $path): void
+    private static function createMedia(string $fileName, int $category, string $path): array
     {
         $data = [];
         $data['title'] = '';
@@ -283,7 +286,7 @@ class rex_content
         ];
 
         try {
-            rex_media_service::addMedia($data, false);
+            return rex_media_service::addMedia($data, false);
         }
         catch (rex_api_exception $e) {
             throw new rex_functional_exception($e->getMessage());
