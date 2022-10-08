@@ -1,4 +1,4 @@
-# Helfer-Addon um Inhalte für REDAXO 5 zu erstellen :construction:
+# Helfer-Addon um Inhalte für REDAXO 5 zu erstellen
 
 Über das Addon __rex_content__ lassen sich Inhalte für eine REDAXO-Instanz einfach und schnell programmatisch erstellen. 
 
@@ -127,8 +127,3 @@ $sliceContent = $slice->get();
 
 //rex_content::createSlice($articleId, $moduleId, $clangId, $ctypeId, $sliceContent);
 ```
-
-## TODO:
-
-- [x] Create Modules
-- [ ] Write Tests
