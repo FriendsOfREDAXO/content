@@ -113,6 +113,21 @@ $moduleInput = $module->getInput();
 $moduleOutput = $module->getOutput();
 ```
 
+### Slice content
+
+```php
+$slice = rex_content_slice::factory();
+$slice->value(1, 'Lorem Ipsum');
+$slice->value(2, 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.');
+$slice->link(1, 5);
+$slice->linkList(1, [2,3,4,5]);
+$slice->media(1, 5);
+$slice->mediaList(1, [2,3,4,5]);
+$sliceContent = $slice->get();
+
+//rex_content::createSlice($articleId, $moduleId, $clangId, $ctypeId, $sliceContent);
+```
+
 ## TODO:
 
 - [x] Create Modules
