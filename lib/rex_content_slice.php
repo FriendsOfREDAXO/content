@@ -19,12 +19,12 @@ class rex_content_slice
     }
 
     /**
-     * @return array data array if not empty
+     * @return array<string, mixed> data array if not empty
      * @throws rex_exception
      */
     public function get(): array
     {
-        if (empty($this->data)) {
+        if (sizeof($this->data) === 0) {
             throw new \rex_exception('Data is empty');
         }
 
@@ -51,6 +51,7 @@ class rex_content_slice
      * @param string $media
      * @return rex_content_slice
      * @throws rex_exception
+     * @api
      */
     public function media(int $id, string $media): rex_content_slice
     {
@@ -63,9 +64,10 @@ class rex_content_slice
 
     /**
      * @param int $id
-     * @param array $mediaList
+     * @param array<string> $mediaList
      * @return rex_content_slice
      * @throws rex_exception
+     * @api
      */
     public function mediaList(int $id, array $mediaList): rex_content_slice
     {
@@ -81,6 +83,7 @@ class rex_content_slice
      * @param int $link
      * @return rex_content_slice
      * @throws rex_exception
+     * @api
      */
     public function link(int $id, int $link): rex_content_slice
     {
@@ -93,9 +96,10 @@ class rex_content_slice
 
     /**
      * @param int $id
-     * @param array $linkList
+     * @param array<int> $linkList
      * @return rex_content_slice
      * @throws rex_exception
+     * @api
      */
     public function linkList(int $id, array $linkList): rex_content_slice
     {

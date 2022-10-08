@@ -30,8 +30,8 @@ class rex_content
             $sql = rex_sql::factory();
             $sql->setQuery('SELECT priority FROM ' . rex::getTable('article') . ' WHERE parent_id = ? ORDER BY priority DESC LIMIT 1', [$categoryId]);
 
-            if ($sql->getRows()) {
-                $priority = (int)$sql->getValue('priority') + 1;
+            if ($sql->getRows() > 0) {
+                $priority = $sql->getValue('priority') + 1;
             }
             else {
                 $priority = 1;
@@ -56,7 +56,7 @@ class rex_content
         $sql->setQuery('SELECT id FROM ' . rex::getTable('article') . ' WHERE name = ? ORDER BY id DESC LIMIT 1', [$name]);
 
         if ($sql->getRows() === 1) {
-            return (int)$sql->getValue('id');
+            return $sql->getValue('id');
         }
 
         return null;
@@ -101,6 +101,7 @@ class rex_content
      */
     public static function createTemplate(string $name, string|null $key = null, string $content = '', int $active = 1): int
     {
+        $attributes = [];
         $attributes['ctype'] = [];
         $attributes['modules'] = [1 => ['all' => '1']];
         $attributes['categories'] = ['all' => '1'];
@@ -187,7 +188,7 @@ class rex_content
      * @param int $moduleId
      * @param int $clangId
      * @param int $ctypeId
-     * @param array $data
+     * @param array<string, mixed> $data
      * @return void
      * @throws rex_api_exception
      */
@@ -213,8 +214,8 @@ class rex_content
         $sql = rex_sql::factory();
         $sql->setQuery('SELECT id FROM ' . rex::getTable('clang') . ' WHERE `code` = ? LIMIT 1', [$code]);
 
-        if ($sql->getRows()) {
-            return (int)$sql->getValue('id');
+        if ($sql->getRows() > 0) {
+            return $sql->getValue('id');
         }
 
         return false;
@@ -226,7 +227,7 @@ class rex_content
      * @param string $url
      * @param string $fileName
      * @param int $category
-     * @return array|false
+     * @return array<string, mixed>|false
      * @throws rex_functional_exception
      * @throws rex_socket_exception
      */
@@ -250,7 +251,7 @@ class rex_content
      * @param int $category
      * @param int $width
      * @param int $height
-     * @return array|false
+     * @return array<string, mixed>|false
      * @throws rex_functional_exception
      */
     public static function createMediaFromGD(string $fileName, int $category = 0, int $width = 500, int $height = 500): array|false
@@ -272,7 +273,7 @@ class rex_content
      * @param string $fileName
      * @param int $category
      * @param string $path
-     * @return array
+     * @return array<string, mixed>
      * @throws rex_functional_exception
      */
     private static function createMedia(string $fileName, int $category, string $path): array

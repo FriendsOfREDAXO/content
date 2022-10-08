@@ -4,6 +4,7 @@ class rex_content_module
 {
     /** @var array|string[] */
     private array $inputData = [];
+    /** @var array|string[] */
     private array $outputData = [];
     private const VALUE = 'value';
     private const MEDIA = 'media';
@@ -25,7 +26,7 @@ class rex_content_module
      */
     public function getInput(): string
     {
-        if (empty($this->inputData)) {
+        if (sizeof($this->inputData) === 0) {
             throw new \rex_exception('Input is empty');
         }
 
@@ -38,7 +39,7 @@ class rex_content_module
      */
     public function getOutput(): string
     {
-        if (empty($this->outputData)) {
+        if (sizeof($this->outputData) === 0) {
             throw new \rex_exception('Output is empty');
         }
 
@@ -73,6 +74,7 @@ class rex_content_module
      * @param int $id
      * @return rex_content_module
      * @throws rex_exception
+     * @api
      */
     public function media(int $id): rex_content_module
     {
@@ -91,6 +93,7 @@ class rex_content_module
      * @param int $id
      * @return rex_content_module
      * @throws rex_exception
+     * @api
      */
     public function mediaList(int $id): rex_content_module
     {
@@ -111,6 +114,7 @@ class rex_content_module
      * @param int $id
      * @return rex_content_module
      * @throws rex_exception
+     * @api
      */
     public function link(int $id): rex_content_module
     {
@@ -129,6 +133,7 @@ class rex_content_module
      * @param int $id
      * @return rex_content_module
      * @throws rex_exception
+     * @api
      */
     public function linkList(int $id): rex_content_module
     {
