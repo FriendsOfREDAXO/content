@@ -157,9 +157,7 @@ class rex_content_module
     private function wrapInput(string $input): string
     {
         return '<div class="form-group">
-                    <div class="col-sm-12">
-                        ' . $input . '
-                    </div>
+                    ' . $input . '
                 </div>';
     }
 
