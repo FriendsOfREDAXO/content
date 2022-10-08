@@ -53,11 +53,17 @@ test('expect article id', function ()
     expect(rex_content::createArticle('Article Name'))->toBeInt();
 });
 
+/**
+ * language
+ */
 test('expect clang id', function ()
 {
-    expect(rex_content::createLanguage('xy', 'XY', 1))->toBeInt();
+    expect(rex_content::createLanguage('xy', 'XY', 2))->toBeInt();
 });
 
+/**
+ * media
+ */
 test('expect media array from GD', function ()
 {
     expect(rex_content::createMediaFromGD('gd_image.jpg'))->toBeArray();
@@ -67,6 +73,49 @@ test('expect media array from URL', function ()
 {
     expect(rex_content::createMediaFromUrl('https://raw.githubusercontent.com/FriendsOfREDAXO/friendsofredaxo.github.io/assets/v2/FOR-avatar-03.png', 'url_image.jpg'))->toBeArray();
 });
+
+/**
+ * content slice
+ */
+test('expect array from content slice', function ()
+{
+    $slice = rex_content_slice::factory();
+    $slice->value(1, 'Lorem Ipsum');
+    expect($slice->get())->toBeArray();
+});
+
+test('expect rex_content_slice value already exists exception', function ()
+{
+    $slice = rex_content_slice::factory();
+    $slice->value(1, 'Lorem Ipsum');
+    $slice->value(1, 'Lorem Ipsum');
+})->throws(rex_exception::class, 'Value already exists');
+
+/**
+ * content module
+ */
+test('expect input string from content module', function ()
+{
+    $module = rex_content_module::factory();
+    $module->value(1);
+    $module->getInput();
+    expect($module->getInput())->toBeString();
+});
+
+test('expect output string from content module', function ()
+{
+    $module = rex_content_module::factory();
+    $module->value(1);
+    $module->getInput();
+    expect($module->getOutput())->toBeString();
+});
+
+test('expect rex_content_module value already exists exception', function ()
+{
+    $module = rex_content_module::factory();
+    $module->value(1);
+    $module->value(1);
+})->throws(rex_exception::class, 'Value already exists');
 
 afterEach(function ()
 {
