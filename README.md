@@ -98,8 +98,22 @@ rex_content::createMediaFromUrl('https://url-to-file.de/file.jpg', 'filename.jpg
 rex_content::createLanguage('language_code', 'Language Name', 1, bool $status = false);
 ```
 
+### Module input/output
+
+```php
+$module = rex_content_module::factory();
+$module->value(1);
+$module->value(2, 'textarea');
+$module->link(1);
+$module->linkList(1);
+$module->media(1);
+$module->mediaList(1);
+
+$moduleInput = $module->getInput();
+$moduleOutput = $module->getOutput();
+```
+
 ## TODO:
 
-- [ ] Create Modules
-- [ ] Add Faker PHP
+- [x] Create Modules
 - [ ] Write Tests
