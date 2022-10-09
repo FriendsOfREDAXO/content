@@ -1,8 +1,8 @@
 package: rex_content
-version: "0.0.1-dev"
+version: "0.0.1"
 name: REDAXO Content Helper
-author: eaCe
-supportpage: https://github.com/eace/rex_content
+author: FriendsOfREDAXO
+supportpage: https://github.com/FriendsOfREDAXO/rex_content
 
 requires:
   redaxo: ^5.14.0
