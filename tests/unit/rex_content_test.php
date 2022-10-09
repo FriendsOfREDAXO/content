@@ -54,6 +54,14 @@ test('expect article id', function ()
 });
 
 /**
+ * category
+ */
+test('expect category id', function ()
+{
+    expect(rex_content::createCategory('Category Name'))->toBeInt();
+});
+
+/**
  * language
  */
 test('expect clang id', function ()

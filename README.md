@@ -18,6 +18,20 @@
 rex_content::createArticle('Article Name', int $categoryId = 0, int|string $priority = -1, int|null $templateId = null);
 ```
 
+### Category
+
+```php
+/**
+ * Erstellen einer Kategorie
+ * return int(Category ID)|null 
+ * @param string $name
+ * @param int|string $categoryId (optional)
+ * @param int|string $priority (optional)
+ * @param int|null $status (optional)
+ */
+rex_content::createCategory('Category Name', int|string $categoryId = '', int|string $priority = -1, int|null $status = null);
+```
+
 ### Module
 
 ```php

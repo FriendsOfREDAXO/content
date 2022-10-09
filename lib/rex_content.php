@@ -3,6 +3,37 @@
 class rex_content
 {
     /**
+     * create a category
+     *
+     * @param string $name
+     * @param int|string $categoryId
+     * @param int|string $priority
+     * @param int|null $status
+     * @return int|null category id on success null on failure
+     * @throws rex_sql_exception|rex_api_exception|rex_exception
+     */
+    public static function createCategory(string $name, int|string $categoryId = '', int|string $priority = -1, int|null $status = null): int|null
+    {
+        $data = [
+            'name' => rex_string::sanitizeHtml(trim($name)),
+            'catname' => rex_string::sanitizeHtml(trim($name)),
+            'catpriority' => $priority,
+            'status' => $status,
+        ];
+
+        rex_category_service::addCategory($categoryId, $data);
+
+        $sql = rex_sql::factory();
+        $sql->setQuery('SELECT id FROM ' . rex::getTable('article') . ' WHERE catname = ? ORDER BY id DESC LIMIT 1', [$name]);
+
+        if ($sql->getRows() === 1) {
+            return $sql->getValue('id');
+        }
+
+        return null;
+    }
+
+    /**
      * create an article
      *
      * @param string $name
