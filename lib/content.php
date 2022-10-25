@@ -1,6 +1,6 @@
 <?php
 
-class rex_content
+class content
 {
     /**
      * create a category

@@ -1,6 +1,6 @@
 <?php
 
-class rex_content_slice
+class content_slice
 {
     /** @var array|string[] */
     private array $data = [];
@@ -11,9 +11,9 @@ class rex_content_slice
     private const LINK_LIST = 'linklist';
 
     /**
-     * @return rex_content_slice
+     * @return content_slice
      */
-    public static function factory(): rex_content_slice
+    public static function factory(): content_slice
     {
         return new self();
     }
@@ -34,10 +34,10 @@ class rex_content_slice
     /**
      * @param int $id
      * @param string $content
-     * @return rex_content_slice
+     * @return content_slice
      * @throws rex_exception
      */
-    public function value(int $id, string $content): rex_content_slice
+    public function value(int $id, string $content): content_slice
     {
         $this->checkId($id, 20);
         $this->checkValue(self::VALUE, $id);
@@ -49,11 +49,11 @@ class rex_content_slice
     /**
      * @param int $id
      * @param string $media
-     * @return rex_content_slice
+     * @return content_slice
      * @throws rex_exception
      * @api
      */
-    public function media(int $id, string $media): rex_content_slice
+    public function media(int $id, string $media): content_slice
     {
         $this->checkId($id, 10);
         $this->checkValue(self::MEDIA, $id);
@@ -65,11 +65,11 @@ class rex_content_slice
     /**
      * @param int $id
      * @param array<string> $mediaList
-     * @return rex_content_slice
+     * @return content_slice
      * @throws rex_exception
      * @api
      */
-    public function mediaList(int $id, array $mediaList): rex_content_slice
+    public function mediaList(int $id, array $mediaList): content_slice
     {
         $this->checkId($id, 10);
         $this->checkValue(self::MEDIA_LIST, $id);
@@ -81,11 +81,11 @@ class rex_content_slice
     /**
      * @param int $id
      * @param int $link
-     * @return rex_content_slice
+     * @return content_slice
      * @throws rex_exception
      * @api
      */
-    public function link(int $id, int $link): rex_content_slice
+    public function link(int $id, int $link): content_slice
     {
         $this->checkId($id, 10);
         $this->checkValue(self::LINK, $id);
@@ -97,11 +97,11 @@ class rex_content_slice
     /**
      * @param int $id
      * @param array<int> $linkList
-     * @return rex_content_slice
+     * @return content_slice
      * @throws rex_exception
      * @api
      */
-    public function linkList(int $id, array $linkList): rex_content_slice
+    public function linkList(int $id, array $linkList): content_slice
     {
         $this->checkId($id, 10);
         $this->checkValue(self::LINK_LIST, $id);

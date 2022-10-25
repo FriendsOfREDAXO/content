@@ -1,6 +1,6 @@
 <?php
 
-class rex_content_module
+class content_module
 {
     /** @var array|string[] */
     private array $inputData = [];
@@ -13,9 +13,9 @@ class rex_content_module
     private const LINK_LIST = 'linklist';
 
     /**
-     * @return rex_content_module
+     * @return content_module
      */
-    public static function factory(): rex_content_module
+    public static function factory(): content_module
     {
         return new self();
     }
@@ -49,10 +49,10 @@ class rex_content_module
     /**
      * @param int $id
      * @param string $type
-     * @return rex_content_module
+     * @return content_module
      * @throws rex_exception
      */
-    public function value(int $id, string $type = 'text'): rex_content_module
+    public function value(int $id, string $type = 'text'): content_module
     {
         $this->checkId($id, 20);
         $this->checkValue(self::VALUE, $id);
@@ -72,11 +72,11 @@ class rex_content_module
 
     /**
      * @param int $id
-     * @return rex_content_module
+     * @return content_module
      * @throws rex_exception
      * @api
      */
-    public function media(int $id): rex_content_module
+    public function media(int $id): content_module
     {
         $this->checkId($id, 10);
         $this->checkValue(self::MEDIA, $id);
@@ -91,11 +91,11 @@ class rex_content_module
 
     /**
      * @param int $id
-     * @return rex_content_module
+     * @return content_module
      * @throws rex_exception
      * @api
      */
-    public function mediaList(int $id): rex_content_module
+    public function mediaList(int $id): content_module
     {
         $this->checkId($id, 10);
         $this->checkValue(self::MEDIA_LIST, $id);
@@ -112,11 +112,11 @@ class rex_content_module
 
     /**
      * @param int $id
-     * @return rex_content_module
+     * @return content_module
      * @throws rex_exception
      * @api
      */
-    public function link(int $id): rex_content_module
+    public function link(int $id): content_module
     {
         $this->checkId($id, 10);
         $this->checkValue(self::LINK, $id);
@@ -131,11 +131,11 @@ class rex_content_module
 
     /**
      * @param int $id
-     * @return rex_content_module
+     * @return content_module
      * @throws rex_exception
      * @api
      */
-    public function linkList(int $id): rex_content_module
+    public function linkList(int $id): content_module
     {
         $this->checkId($id, 10);
         $this->checkValue(self::LINK_LIST, $id);
