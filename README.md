@@ -127,6 +127,44 @@ $moduleInput = $module->getInput();
 $moduleOutput = $module->getOutput();
 ```
 
+#### $moduleInput
+
+```html
+<div class="form-group">
+    <input type="text" class="form-control" name="REX_INPUT_VALUE[1]" value="REX_VALUE[1]" />
+</div>
+<div class="form-group">
+    <textarea class="form-control" name="REX_INPUT_VALUE[2]">REX_VALUE[2]</textarea>
+</div>
+<div class="form-group">
+    REX_LINK[id=1 widget=1]
+</div>
+<div class="form-group">
+    REX_LINKLIST[id=1 widget=1]
+</div>
+<div class="form-group">
+    REX_MEDIA[id=1 widget=1]
+</div>
+<div class="form-group">
+    REX_MEDIALIST[id=1 widget=1]
+</div>
+```
+
+#### $moduleOutput
+
+```html
+<div>REX_VALUE[1]</div>
+<div>REX_VALUE[id=2 output="html"]</div>
+<div><a href="REX_LINK[id=1 output=url]">Article ID: REX_LINK[id=1]</a></div>
+<?php foreach (explode(",", REX_LINKLIST[id=1]) as $articleId): ?>
+    <div><a href="<?=rex_getUrl($articleId);?>">Article ID: <?=$articleId;?></a></div>
+<?php endforeach;?>
+<img src="/media/REX_MEDIA[id=1]" />
+<?php foreach (explode(",", REX_MEDIALIST[id=1]) as $image): ?>
+    <div><img src ="/media/<?=$image;?>"/></div>
+<?php endforeach;?>
+```
+
 ### Slice content
 
 ```php
@@ -140,4 +178,23 @@ $slice->mediaList(1, ['for.png', 'for_1.png', 'for_2.png']);
 $sliceContent = $slice->get();
 
 //content::createSlice($articleId, $moduleId, $clangId, $ctypeId, $sliceContent);
+```
+
+#### $sliceContent
+
+```php
+array(6) {
+  ["value1"]=>
+  string(11) "Lorem Ipsum"
+  ["value2"]=>
+  string(231) "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat."
+  ["link1"]=>
+  int(5)
+  ["linklist1"]=>
+  string(7) "2,3,4,5"
+  ["media1"]=>
+  string(7) "for.png"
+  ["medialist1"]=>
+  string(27) "for.png,for_1.png,for_2.png"
+}
 ```
