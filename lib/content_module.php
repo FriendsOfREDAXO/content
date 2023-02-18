@@ -2,31 +2,28 @@
 
 class content_module
 {
-    /** @var array|string[] */
-    private array $inputData = [];
-    /** @var array|string[] */
-    private array $outputData = [];
     private const VALUE = 'value';
     private const MEDIA = 'media';
     private const MEDIA_LIST = 'medialist';
     private const LINK = 'link';
     private const LINK_LIST = 'linklist';
+    /** @var array|string[] */
+    private array $inputData = [];
+    /** @var array|string[] */
+    private array $outputData = [];
 
-    /**
-     * @return content_module
-     */
-    public static function factory(): content_module
+    public static function factory(): self
     {
         return new self();
     }
 
     /**
-     * @return string input as string if not empty
      * @throws rex_exception
+     * @return string input as string if not empty
      */
     public function getInput(): string
     {
-        if (sizeof($this->inputData) === 0) {
+        if (0 === count($this->inputData)) {
             throw new \rex_exception('Input is empty');
         }
 
@@ -34,12 +31,12 @@ class content_module
     }
 
     /**
-     * @return string output as string if not empty
      * @throws rex_exception
+     * @return string output as string if not empty
      */
     public function getOutput(): string
     {
-        if (sizeof($this->outputData) === 0) {
+        if (0 === count($this->outputData)) {
             throw new \rex_exception('Output is empty');
         }
 
@@ -47,12 +44,9 @@ class content_module
     }
 
     /**
-     * @param int $id
-     * @param string $type
-     * @return content_module
      * @throws rex_exception
      */
-    public function value(int $id, string $type = 'text'): content_module
+    public function value(int $id, string $type = 'text'): self
     {
         $this->checkId($id, 20);
         $this->checkValue(self::VALUE, $id);
@@ -60,7 +54,7 @@ class content_module
         $output = '<div>REX_VALUE[' . $id . ']</div>';
         $input = '<input type="text" class="form-control" name="REX_INPUT_VALUE[' . $id . ']" value="REX_VALUE[' . $id . ']" />';
 
-        if ($type === 'textarea') {
+        if ('textarea' === $type) {
             $input = '<textarea class="form-control" name="REX_INPUT_VALUE[' . $id . ']">REX_VALUE[' . $id . ']</textarea>';
             $output = '<div>REX_VALUE[id=' . $id . ' output="html"]</div>';
         }
@@ -71,12 +65,10 @@ class content_module
     }
 
     /**
-     * @param int $id
-     * @return content_module
      * @throws rex_exception
      * @api
      */
-    public function media(int $id): content_module
+    public function media(int $id): self
     {
         $this->checkId($id, 10);
         $this->checkValue(self::MEDIA, $id);
@@ -90,12 +82,10 @@ class content_module
     }
 
     /**
-     * @param int $id
-     * @return content_module
      * @throws rex_exception
      * @api
      */
-    public function mediaList(int $id): content_module
+    public function mediaList(int $id): self
     {
         $this->checkId($id, 10);
         $this->checkValue(self::MEDIA_LIST, $id);
@@ -111,12 +101,10 @@ class content_module
     }
 
     /**
-     * @param int $id
-     * @return content_module
      * @throws rex_exception
      * @api
      */
-    public function link(int $id): content_module
+    public function link(int $id): self
     {
         $this->checkId($id, 10);
         $this->checkValue(self::LINK, $id);
@@ -130,12 +118,10 @@ class content_module
     }
 
     /**
-     * @param int $id
-     * @return content_module
      * @throws rex_exception
      * @api
      */
-    public function linkList(int $id): content_module
+    public function linkList(int $id): self
     {
         $this->checkId($id, 10);
         $this->checkValue(self::LINK_LIST, $id);
@@ -151,7 +137,6 @@ class content_module
     }
 
     /**
-     * @param string $input
      * @return string the wrapped input
      */
     private function wrapInput(string $input): string
@@ -162,9 +147,6 @@ class content_module
     }
 
     /**
-     * @param int $id
-     * @param int $max
-     * @return void
      * @throws rex_exception
      */
     private function checkId(int $id, int $max): void
@@ -179,9 +161,6 @@ class content_module
     }
 
     /**
-     * @param string $type
-     * @param int $id
-     * @return void
      * @throws rex_exception
      */
     private function checkValue(string $type, int $id): void
@@ -191,21 +170,11 @@ class content_module
         }
     }
 
-    /**
-     * @param string $type
-     * @param int $id
-     * @return bool
-     */
     private function valueExists(string $type, int $id): bool
     {
         return array_key_exists($this->getKey($type, $id), $this->inputData);
     }
 
-    /**
-     * @param string $type
-     * @param int $id
-     * @return string
-     */
     private function getKey(string $type, int $id): string
     {
         return $type . $id;

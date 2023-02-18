@@ -2,29 +2,26 @@
 
 class content_slice
 {
-    /** @var array|string[] */
-    private array $data = [];
     private const VALUE = 'value';
     private const MEDIA = 'media';
     private const MEDIA_LIST = 'medialist';
     private const LINK = 'link';
     private const LINK_LIST = 'linklist';
+    /** @var array|string[] */
+    private array $data = [];
 
-    /**
-     * @return content_slice
-     */
-    public static function factory(): content_slice
+    public static function factory(): self
     {
         return new self();
     }
 
     /**
-     * @return array<string, mixed> data array if not empty
      * @throws rex_exception
+     * @return array<string, mixed> data array if not empty
      */
     public function get(): array
     {
-        if (sizeof($this->data) === 0) {
+        if (0 === count($this->data)) {
             throw new \rex_exception('Data is empty');
         }
 
@@ -32,12 +29,9 @@ class content_slice
     }
 
     /**
-     * @param int $id
-     * @param string $content
-     * @return content_slice
      * @throws rex_exception
      */
-    public function value(int $id, string $content): content_slice
+    public function value(int $id, string $content): self
     {
         $this->checkId($id, 20);
         $this->checkValue(self::VALUE, $id);
@@ -47,13 +41,10 @@ class content_slice
     }
 
     /**
-     * @param int $id
-     * @param string $media
-     * @return content_slice
      * @throws rex_exception
      * @api
      */
-    public function media(int $id, string $media): content_slice
+    public function media(int $id, string $media): self
     {
         $this->checkId($id, 10);
         $this->checkValue(self::MEDIA, $id);
@@ -63,13 +54,11 @@ class content_slice
     }
 
     /**
-     * @param int $id
      * @param array<string> $mediaList
-     * @return content_slice
      * @throws rex_exception
      * @api
      */
-    public function mediaList(int $id, array $mediaList): content_slice
+    public function mediaList(int $id, array $mediaList): self
     {
         $this->checkId($id, 10);
         $this->checkValue(self::MEDIA_LIST, $id);
@@ -79,13 +68,10 @@ class content_slice
     }
 
     /**
-     * @param int $id
-     * @param int $link
-     * @return content_slice
      * @throws rex_exception
      * @api
      */
-    public function link(int $id, int $link): content_slice
+    public function link(int $id, int $link): self
     {
         $this->checkId($id, 10);
         $this->checkValue(self::LINK, $id);
@@ -95,13 +81,11 @@ class content_slice
     }
 
     /**
-     * @param int $id
      * @param array<int> $linkList
-     * @return content_slice
      * @throws rex_exception
      * @api
      */
-    public function linkList(int $id, array $linkList): content_slice
+    public function linkList(int $id, array $linkList): self
     {
         $this->checkId($id, 10);
         $this->checkValue(self::LINK_LIST, $id);
@@ -111,9 +95,6 @@ class content_slice
     }
 
     /**
-     * @param int $id
-     * @param int $max
-     * @return void
      * @throws rex_exception
      */
     private function checkId(int $id, int $max): void
@@ -128,9 +109,6 @@ class content_slice
     }
 
     /**
-     * @param string $type
-     * @param int $id
-     * @return void
      * @throws rex_exception
      */
     private function checkValue(string $type, int $id): void
@@ -140,21 +118,11 @@ class content_slice
         }
     }
 
-    /**
-     * @param string $type
-     * @param int $id
-     * @return bool
-     */
     private function valueExists(string $type, int $id): bool
     {
         return array_key_exists($this->getKey($type, $id), $this->data);
     }
 
-    /**
-     * @param string $type
-     * @param int $id
-     * @return string
-     */
     private function getKey(string $type, int $id): string
     {
         return $type . $id;

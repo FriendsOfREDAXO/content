@@ -2,15 +2,17 @@
   "license": "MIT",
   "scripts": {
     "lint": "phplint ./ --exclude=vendor --no-cache lib",
-    "phpcs": "phpcs --extensions=php --standard=phpcs.xml lib",
-    "phpcbf": "phpcbf --extensions=php --standard=phpcs.xml lib",
+    "cs-dry": "php-cs-fixer fix -v --ansi --dry-run --config=.php-cs-fixer.dist.php",
+    "cs-fix": "php-cs-fixer fix -v --ansi --config=.php-cs-fixer.dist.php",
     "test": "./vendor/bin/pest --testdox"
   },
   "require-dev": {
-    "squizlabs/php_codesniffer": "^3.6",
+    "redaxo/php-cs-fixer-config": "^2.0",
+    "friendsofphp/php-cs-fixer": "^3.14",
     "overtrue/phplint": "^4.1",
     "pestphp/pest": "^1.22",
-    "psr/log": "1.1.4"
+    "psr/log": "1.1.4",
+    "symfony/console": "5.4"
   },
   "config": {
     "allow-plugins": {

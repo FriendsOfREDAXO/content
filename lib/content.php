@@ -3,14 +3,11 @@
 class content
 {
     /**
-     * create a category
+     * create a category.
      *
-     * @param string $name
-     * @param int|string $categoryId
-     * @param int|string $priority
      * @param int|null $status
-     * @return int|null category id on success null on failure
      * @throws rex_sql_exception|rex_api_exception|rex_exception
+     * @return int|null category id on success null on failure
      */
     public static function createCategory(string $name, int|string $categoryId = '', int|string $priority = -1, int|null $status = null): int|null
     {
@@ -26,7 +23,7 @@ class content
         $sql = rex_sql::factory();
         $sql->setQuery('SELECT id FROM ' . rex::getTable('article') . ' WHERE catname = ? ORDER BY id DESC LIMIT 1', [$name]);
 
-        if ($sql->getRows() === 1) {
+        if (1 === $sql->getRows()) {
             return $sql->getValue('id');
         }
 
@@ -34,14 +31,11 @@ class content
     }
 
     /**
-     * create an article
+     * create an article.
      *
-     * @param string $name
-     * @param int $categoryId
-     * @param int|string $priority
      * @param int|null $templateId
-     * @return int|null article id on success null on failure
      * @throws rex_sql_exception|rex_api_exception|rex_exception
+     * @return int|null article id on success null on failure
      */
     public static function createArticle(string $name, int $categoryId = 0, int|string $priority = -1, int|null $templateId = null): int|null
     {
@@ -50,34 +44,30 @@ class content
             'category_id' => $categoryId,
         ];
 
-        if (rex_category::get($categoryId) === null && $categoryId > 0) {
+        if (null === rex_category::get($categoryId) && $categoryId > 0) {
             throw new rex_exception('Category does not exist');
         }
 
         if (is_int($priority)) {
             $data['priority'] = $priority;
-        }
-        elseif ($priority === 'last') {
+        } elseif ('last' === $priority) {
             $sql = rex_sql::factory();
             $sql->setQuery('SELECT priority FROM ' . rex::getTable('article') . ' WHERE parent_id = ? ORDER BY priority DESC LIMIT 1', [$categoryId]);
 
             if ($sql->getRows() > 0) {
                 $priority = $sql->getValue('priority') + 1;
-            }
-            else {
+            } else {
                 $priority = 1;
             }
 
             $data['priority'] = $priority;
-        }
-        else {
+        } else {
             $data['priority'] = -1;
         }
 
-        if ($templateId !== null) {
+        if (null !== $templateId) {
             $data['template_id'] = $templateId;
-        }
-        else {
+        } else {
             $data['template_id'] = rex_template::getDefaultId();
         }
 
@@ -86,7 +76,7 @@ class content
         $sql = rex_sql::factory();
         $sql->setQuery('SELECT id FROM ' . rex::getTable('article') . ' WHERE name = ? ORDER BY id DESC LIMIT 1', [$name]);
 
-        if ($sql->getRows() === 1) {
+        if (1 === $sql->getRows()) {
             return $sql->getValue('id');
         }
 
@@ -94,14 +84,11 @@ class content
     }
 
     /**
-     * create a module
+     * create a module.
      *
-     * @param string $name
      * @param string|null $key
-     * @param string $input
-     * @param string $output
-     * @return int the id of the created module
      * @throws rex_sql_exception
+     * @return int the id of the created module
      */
     public static function createModule(string $name, string|null $key = null, string $input = '', string $output = ''): int
     {
@@ -114,21 +101,18 @@ class content
         $sql->addGlobalCreateFields();
 
         $sql->insert();
-        $moduleId = (int)$sql->getLastId();
+        $moduleId = (int) $sql->getLastId();
         rex_module_cache::delete($moduleId);
 
         return $moduleId;
     }
 
     /**
-     * create a template
+     * create a template.
      *
-     * @param string $name
      * @param string|null $key
-     * @param string $content
-     * @param int $active
-     * @return int the id of the created template
      * @throws rex_sql_exception|rex_exception
+     * @return int the id of the created template
      */
     public static function createTemplate(string $name, string|null $key = null, string $content = '', int $active = 1): int
     {
@@ -137,7 +121,7 @@ class content
         $attributes['modules'] = [1 => ['all' => '1']];
         $attributes['categories'] = ['all' => '1'];
 
-        if ($key !== null && self::templateKeyExists($key)) {
+        if (null !== $key && self::templateKeyExists($key)) {
             throw new rex_exception('Template key already exists');
         }
 
@@ -152,25 +136,24 @@ class content
 
         $sql->insert();
 
-        $templateId = (int)$sql->getLastId();
+        $templateId = (int) $sql->getLastId();
         rex_template_cache::delete($templateId);
 
         return $templateId;
     }
 
     /**
-     * get the contents from an template by id
+     * get the contents from an template by id.
      *
-     * @param int $id
-     * @return false|string string on success false on failure
      * @throws rex_sql_exception
+     * @return false|string string on success false on failure
      */
     public static function getTemplateContent(int $id): false|string
     {
         $templateSql = rex_sql::factory();
         $templateSql->setQuery('SELECT content FROM ' . rex::getTable('template') . ' WHERE id = ?', [$id]);
 
-        if ($templateSql->getRows() === 0) {
+        if (0 === $templateSql->getRows()) {
             return false;
         }
 
@@ -178,11 +161,8 @@ class content
     }
 
     /**
-     * update content of an existing template
+     * update content of an existing template.
      *
-     * @param int $id
-     * @param string $content
-     * @return void
      * @throws rex_sql_exception
      */
     public static function setTemplateContent(int $id, string $content): void
@@ -201,8 +181,7 @@ class content
             try {
                 $sql->update();
                 rex_template_cache::delete($template->getId());
-            }
-            catch (rex_sql_exception $error) {
+            } catch (rex_sql_exception $error) {
                 if (rex_sql::ERROR_VIOLATE_UNIQUE_KEY === $error->getErrorCode()) {
                     throw new rex_sql_exception(rex_i18n::msg('template_key_exists'));
                 }
@@ -213,14 +192,9 @@ class content
     }
 
     /**
-     * create a slice
+     * create a slice.
      *
-     * @param int $articleId
-     * @param int $moduleId
-     * @param int $clangId
-     * @param int $ctypeId
      * @param array<string, mixed> $data
-     * @return void
      * @throws rex_api_exception
      */
     public static function createSlice(int $articleId, int $moduleId, int $clangId, int $ctypeId = 1, array $data = []): void
@@ -229,13 +203,8 @@ class content
     }
 
     /**
-     * create a language
+     * create a language.
      *
-     * @param string $code
-     * @param string $name
-     * @param int $priority
-     * @param bool $status
-     * @return false|int
      * @throws rex_sql_exception
      */
     public static function createLanguage(string $code, string $name, int $priority, bool $status = false): false|int
@@ -253,18 +222,15 @@ class content
     }
 
     /**
-     * upload media from url
+     * upload media from url.
      *
-     * @param string $url
-     * @param string $fileName
-     * @param int $category
-     * @return array<string, mixed>|false
      * @throws rex_functional_exception
      * @throws rex_socket_exception
+     * @return array<string, mixed>|false
      */
     public static function createMediaFromUrl(string $url, string $fileName, int $category = 0): array|false
     {
-        if (rex_media::get($fileName) === null) {
+        if (null === rex_media::get($fileName)) {
             $path = rex_path::media($fileName);
             $media = rex_socket::factoryUrl($url)->doGet();
             $media->writeBodyTo($path);
@@ -276,18 +242,14 @@ class content
     }
 
     /**
-     * create a placeholder image via GD
+     * create a placeholder image via GD.
      *
-     * @param string $fileName
-     * @param int $category
-     * @param int $width
-     * @param int $height
-     * @return array<string, mixed>|false
      * @throws rex_functional_exception
+     * @return array<string, mixed>|false
      */
     public static function createMediaFromGD(string $fileName, int $category = 0, int $width = 500, int $height = 500): array|false
     {
-        if (rex_media::get($fileName) === null) {
+        if (null === rex_media::get($fileName)) {
             $path = rex_path::media($fileName);
             $image = @imagecreate($width, $height);
             imagecolorallocate($image, 255, 0, 255);
@@ -301,11 +263,8 @@ class content
     }
 
     /**
-     * @param string $fileName
-     * @param int $category
-     * @param string $path
-     * @return array<string, mixed>
      * @throws rex_functional_exception
+     * @return array<string, mixed>
      */
     private static function createMedia(string $fileName, int $category, string $path): array
     {
@@ -319,26 +278,24 @@ class content
 
         try {
             return rex_media_service::addMedia($data, false);
-        }
-        catch (rex_api_exception $e) {
+        } catch (rex_api_exception $e) {
             throw new rex_functional_exception($e->getMessage());
         }
     }
 
     /**
      * @param string|null $key
-     * @return bool
      * @throws rex_sql_exception
      */
     private static function templateKeyExists(string|null $key = null): bool
     {
-        if ($key === null) {
+        if (null === $key) {
             return false;
         }
 
         $templateSql = rex_sql::factory();
         $templateSql->setQuery('SELECT id FROM ' . rex::getTable('template') . ' WHERE `key` = ?', [$key]);
 
-        return $templateSql->getRows() !== 0;
+        return 0 !== $templateSql->getRows();
     }
 }

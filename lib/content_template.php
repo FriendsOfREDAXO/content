@@ -2,10 +2,6 @@
 
 class content_template
 {
-    /**
-     * @param string $title
-     * @return string
-     */
     public function get(string $title = ''): string
     {
         return '
