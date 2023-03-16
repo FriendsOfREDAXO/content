@@ -53,7 +53,9 @@ jobs:
         run: |
           rsync -av --exclude='vendor' --exclude='.github' --exclude='.git' --exclude='redaxo_cms' './' 'redaxo_cms/redaxo/src/addons/${{ github.event.repository.name }}'
           redaxo_cms/redaxo/bin/console package:install '${{ github.event.repository.name }}'
-          redaxo_cms/redaxo/bin/console package:install 'rexstan'
+          redaxo_cms/redaxo/bin/console install:download rexstan '^1'
+          redaxo_cms/redaxo/bin/console package:install rexstan
+          redaxo_cms/redaxo/bin/console package:activate rexstan
 
       - name: Run rexstan analysis
         run: php redaxo/bin/console rexstan:analyze
