@@ -58,4 +58,4 @@ jobs:
           redaxo_cms/redaxo/bin/console package:activate rexstan
 
       - name: Run rexstan analysis
-        run: php redaxo/bin/console rexstan:analyze
+        run: php redaxo_cms/redaxo/bin/console rexstan:analyze
