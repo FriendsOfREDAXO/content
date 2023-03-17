@@ -27,7 +27,7 @@ try {
         'addons' => '"|' . realpath(__DIR__ . "/../") . '|"',
         'extensions' => '"|' . implode('|', $rexstanExtensions) . '|"',
         'level' => '"' . $rexstanLevel . '"',
-        'phpversion' => '80109',
+        'phpversion' => '"80109"',
     ]);
     echo "New record created successfully";
 
