@@ -31,7 +31,7 @@ try {
     ]);
     echo "New record created successfully";
 
-    $connection = new PDO("mysql:host=$host;dbname=$dbname", $user);
+    $connection = new PDO("mysql:host=$host;dbname=$dbname", $user, $password);
     $statement = $connection->query("SELECT * FROM rex_config");
     while ($row = $statement->fetch()) {
         echo $row['namespace'] . ' : ' . $row['value'];
