@@ -20,7 +20,7 @@ $rexstanExtensions = [
 ];
 
 try {
-    $connection = new PDO("mysql:host=$host;dbname=$dbname", $user);
+    $connection = new PDO("mysql:host=$host;dbname=$dbname", $user, $password);
 
     $statement = $connection->prepare("INSERT INTO rex_config (`namespace`, `key`, `value`) VALUES ('rexstan', 'addons', :addons), ('rexstan', 'extensions', :extensions), ('rexstan', 'level', :level), ('rexstan', 'phpversion', :phpversion)");
     $statement->execute([
