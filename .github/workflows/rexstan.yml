@@ -58,8 +58,7 @@ jobs:
           redaxo_cms/redaxo/bin/console package:activate rexstan
 
       - name: Add rexstan config
-        working-directory: redaxo_cms/redaxo/src/addons/${{ github.event.repository.name }}
-        run: php ./.toos/rexstan.php
+        run: php redaxo_cms/redaxo/src/addons/${{ github.event.repository.name }}/.tools/rexstan.php
 
       - name: Run rexstan analysis
         run: php redaxo_cms/redaxo/bin/console rexstan:analyze
