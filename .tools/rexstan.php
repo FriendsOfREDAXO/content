@@ -16,7 +16,7 @@ $rexstanExtensions = [
     realpath(__DIR__ . '/../../rexstan/config/phpstan-dba.neon'),
     realpath(__DIR__ . '/../../rexstan/config/cognitive-complexity.neon'),
     realpath(__DIR__ . '/../../rexstan/config/code-complexity.neon'),
-    realpath(__DIR__ . '/../../rexstan/config/dead-code.neon')
+    dirname(dirname(__DIR__)) . '/rexstan/config/dead-code.neon'
 ];
 
 try {
@@ -30,7 +30,14 @@ try {
         'phpversion' => '80109',
     ]);
     echo "New record created successfully";
+
+    $connection = new PDO("mysql:host=$host;dbname=$dbname", $user);
+    $statement = $connection->query("SELECT * FROM rex_config");
+    while ($row = $statement->fetch()) {
+        echo $row['namespace'] . ' : ' . $row['value'];
+        echo "\n";
+    }
 }
 catch (PDOException $e) {
-    echo $sql . "<br>" . $e->getMessage();
+    echo $sql . "\n" . $e->getMessage();
 }
