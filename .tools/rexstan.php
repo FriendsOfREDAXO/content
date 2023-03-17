@@ -23,10 +23,10 @@ try {
     $connection = new PDO("mysql:host=$host;dbname=$dbname", $user, $password);
     $connection->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
-    $sql = "INSERT INTO rex_config (namespace, key, value) VALUES ('rexstan', 'addons', '"|' . realpath(__DIR__ . "/../") . '|"')";
-    $sql = "INSERT INTO rex_config (namespace, key, value) VALUES ('rexstan', 'extensions', '"|' . implode('|', $rexstanExtensions) . '|"')";
-    $sql = "INSERT INTO rex_config (namespace, key, value) VALUES ('rexstan', 'level', '" . $rexstanLevel . "')";
-    $sql = "INSERT INTO rex_config (namespace, key, value) VALUES ('rexstan', 'phpversion', '80109')";
+    $sql = "INSERT INTO rex_config (`namespace`, `key`, `value`) VALUES ('rexstan', 'addons', '"|' . realpath(__DIR__ . "/../") . '|"')";
+    $sql = "INSERT INTO rex_config (`namespace`, `key`, `value`) VALUES ('rexstan', 'extensions', '"|' . implode('|', $rexstanExtensions) . '|"')";
+    $sql = "INSERT INTO rex_config (`namespace`, `key`, `value`) VALUES ('rexstan', 'level', '" . $rexstanLevel . "')";
+    $sql = "INSERT INTO rex_config (`namespace`, `key`, `value`) VALUES ('rexstan', 'phpversion', '80109')";
     // use exec() because no results are returned
     $connection->exec($sql);
     echo "New record created successfully";
