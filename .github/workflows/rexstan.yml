@@ -63,4 +63,3 @@ jobs:
 
       - name: Run rexstan analysis
         run: php redaxo_cms/redaxo/bin/console rexstan:analyze
-        run: php redaxo_cms/redaxo/bin/console rexstan:analyze
