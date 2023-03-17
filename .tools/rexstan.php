@@ -20,15 +20,15 @@ $rexstanExtensions = [
 ];
 
 try {
-    $connection = new PDO("mysql:host=$host;dbname=$dbname", $user, $password);
-    $connection->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+    $connection = new PDO("mysql:host=$host;dbname=$dbname", $user);
 
-    $sql = "INSERT INTO rex_config (`namespace`, `key`, `value`) VALUES ('rexstan', 'addons', '"|' . realpath(__DIR__ . "/../") . '|"')";
-    $sql = "INSERT INTO rex_config (`namespace`, `key`, `value`) VALUES ('rexstan', 'extensions', '"|' . implode('|', $rexstanExtensions) . '|"')";
-    $sql = "INSERT INTO rex_config (`namespace`, `key`, `value`) VALUES ('rexstan', 'level', '" . $rexstanLevel . "')";
-    $sql = "INSERT INTO rex_config (`namespace`, `key`, `value`) VALUES ('rexstan', 'phpversion', '80109')";
-    // use exec() because no results are returned
-    $connection->exec($sql);
+    $statement = $connection->prepare("INSERT INTO rex_config (`namespace`, `key`, `value`) VALUES ('rexstan', 'addons', :addons), ('rexstan', 'extensions', :extensions), ('rexstan', 'level', :level), ('rexstan', 'phpversion', :phpversion)");
+    $statement->execute([
+        'addons' => '"|' . realpath(__DIR__ . "/../") . '|"',
+        'extensions' => '"|' . implode('|', $rexstanExtensions) . '|"',
+        'level' => '"' . $rexstanLevel . '"',
+        'phpversion' => '80109',
+    ]);
     echo "New record created successfully";
 }
 catch (PDOException $e) {
