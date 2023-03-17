@@ -59,7 +59,7 @@ jobs:
 
       - name: Add rexstan config
         working-directory: redaxo_cms/redaxo/src/addons/${{ github.event.repository.name }}
-        run: php .toos/rexstan.php
+        run: php ./.toos/rexstan.php
 
       - name: Run rexstan analysis
         run: php redaxo_cms/redaxo/bin/console rexstan:analyze
