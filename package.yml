@@ -9,6 +9,9 @@ requires:
   php:
     version: '>=8.0'
 
+console_commands:
+  content:generate: content_generate
+
 installer_ignore:
   - .git
   - .github
