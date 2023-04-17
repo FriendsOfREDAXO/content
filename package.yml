@@ -11,6 +11,7 @@ requires:
 
 console_commands:
   content:generate: content_generate
+  content:article: content_article
 
 installer_ignore:
   - .git
