@@ -12,6 +12,7 @@ requires:
 console_commands:
   content:generate: content_generate
   content:article: content_article
+  content:category: content_category
 
 installer_ignore:
   - .git
