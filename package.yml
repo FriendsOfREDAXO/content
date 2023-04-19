@@ -13,6 +13,7 @@ console_commands:
   content:generate: content_generate
   content:article: content_article
   content:category: content_category
+  content:language: content_language
 
 installer_ignore:
   - .git
