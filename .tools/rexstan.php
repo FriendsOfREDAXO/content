@@ -1,43 +1,40 @@
 <?php
+/**
+ * boot redaxo and load packages
+ * necessary to use \rexstan\RexStanUserConfig::save()
+ */
+unset($REX);
+$REX['REDAXO'] = true;
+$REX['HTDOCS_PATH'] = './';
+$REX['BACKEND_FOLDER'] = 'redaxo';
+$REX['LOAD_PAGE'] = false;
 
-$host = '127.0.0.1';
-$user = 'root';
-$password = 'root';
-$dbname = 'redaxo5';
-$sql = null;
+require './redaxo/src/core/boot.php';
+require './redaxo/src/core/packages.php';
 
-$rexstanLevel = 9;
-$rexstanExtensions = [
-    realpath(__DIR__ . '/../../rexstan/config/rex-superglobals.neon'),
-    realpath(__DIR__ . '/../../rexstan/vendor/phpstan/phpstan/conf/bleedingEdge.neon'),
-    realpath(__DIR__ . '/../../rexstan/vendor/phpstan/phpstan-strict-rules/rules.neon'),
-    realpath(__DIR__ . '/../../rexstan/vendor/phpstan/phpstan-deprecation-rules/rules.neon'),
-    realpath(__DIR__ . '/../../rexstan/config/phpstan-phpunit.neon'),
-    realpath(__DIR__ . '/../../rexstan/config/phpstan-dba.neon'),
-    realpath(__DIR__ . '/../../rexstan/config/cognitive-complexity.neon'),
-    realpath(__DIR__ . '/../../rexstan/config/code-complexity.neon'),
-    dirname(dirname(__DIR__)) . '/rexstan/config/dead-code.neon'
+/**
+ * rexstan config
+ */
+$extensions = [
+    '../../../../redaxo/src/addons/rexstan/config/rex-superglobals.neon',
+    '../../../../redaxo/src/addons/rexstan/vendor/phpstan/phpstan/conf/bleedingEdge.neon',
+    '../../../../redaxo/src/addons/rexstan/vendor/phpstan/phpstan-strict-rules/rules.neon',
+    '../../../../redaxo/src/addons/rexstan/vendor/phpstan/phpstan-deprecation-rules/rules.neon',
+    '../../../../redaxo/src/addons/rexstan/config/phpstan-phpunit.neon',
+    '../../../../redaxo/src/addons/rexstan/config/phpstan-dba.neon',
+    '../../../../redaxo/src/addons/rexstan/config/cognitive-complexity.neon',
+    '../../../../redaxo/src/addons/rexstan/config/code-complexity.neon',
+    '../../../../redaxo/src/addons/rexstan/config/dead-code.neon'
 ];
 
-try {
-    $connection = new PDO("mysql:host=$host;dbname=$dbname", $user, $password);
+// get addon key from environment variable
+$addon = ['../../../../redaxo/src/addons/' . getenv('ADDON_KEY') . '/'];
 
-    $statement = $connection->prepare("INSERT INTO rex_config (`namespace`, `key`, `value`) VALUES ('rexstan', 'addons', :addons), ('rexstan', 'extensions', :extensions), ('rexstan', 'level', :level), ('rexstan', 'phpversion', :phpversion)");
-    $statement->execute([
-        'addons' => '"|' . realpath(__DIR__ . "/../") . '|"',
-        'extensions' => '"|' . implode('|', $rexstanExtensions) . '|"',
-        'level' => '"' . $rexstanLevel . '"',
-        'phpversion' => '"80109"',
-    ]);
-    echo "New record created successfully";
-
-    $connection = new PDO("mysql:host=$host;dbname=$dbname", $user, $password);
-    $statement = $connection->query("SELECT * FROM rex_config");
-    while ($row = $statement->fetch()) {
-        echo $row['namespace'] . '-' . $row['namespace'] . ' : ' . $row['value'];
-        echo "\n";
-    }
-}
-catch (PDOException $e) {
-    echo $sql . "\n" . $e->getMessage();
-}
+/**
+ * save config
+ * @param int $level the level to use
+ * @param array $addon the addon to use
+ * @param array $extensions the extensions to use
+ * @param int $phpVersion the php version to use
+ */
+\rexstan\RexStanUserConfig::save(5, $addon, $extensions, 80203);
